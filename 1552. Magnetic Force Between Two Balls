@@ -1,0 +1,38 @@
+#include <iostream>
+#include <algorithm>
+
+class Solution {
+public:
+    int maxDistance(vector<int>& position, int m) {
+        std::sort(position.begin(), position.end());
+        int low = 0;
+        int high = position.back() - position.front();
+
+        auto can_place = [&](int distance) -> bool{
+            int count = 1;
+            int last_position = position[0];
+            for(int i = 1; i < size(position); i++){
+                if (position[i] - last_position >= distance){
+                    count++;
+                    last_position = position[i];
+                }
+                if (count == m){
+                    return true;
+                }
+            }
+            return false;
+        };
+
+
+        while(low < high){
+            int mid = (low + high + 1)/2;
+            if(can_place(mid)){
+                low = mid;
+            }
+            else{
+                high = mid - 1;
+            }
+        }
+        return(low);
+    }
+};
